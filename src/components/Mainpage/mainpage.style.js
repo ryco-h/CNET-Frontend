@@ -3,7 +3,10 @@ const { makeStyles } = require("@mui/styles");
 
 export const useMainpageStyles = makeStyles({
    root: {
-
+      width: props => (isMobile) ? `calc(${props.width}px)` : '100%',
+      margin: 'auto',
+      marginTop: '5vw',
+      boxSizing: 'border-box',
    },
    cardContainer: {
       display: 'flex',
@@ -11,13 +14,12 @@ export const useMainpageStyles = makeStyles({
       flexWrap: 'wrap',
       justifyContent: 'center',
       alignItems: 'center',
-      width: '100%'
    },
    collectionContainer: {
       backgroundColor: '#45435f',
       margin: '2vw',
       height: 'auto',
-      width: 'auto',
+      width: 'min-content',
       cursor: 'pointer',
       borderRadius: (!isMobile) && '2vw',
       boxSizing: 'border-box',
@@ -29,6 +31,7 @@ export const useMainpageStyles = makeStyles({
       display: 'grid',
       gridTemplateColumns: 'auto auto',
       margin: '40px',
+      marginBottom: '10px'
    },
    publisher: {
       fontFamily: 'Homenaje',
@@ -36,18 +39,18 @@ export const useMainpageStyles = makeStyles({
       letterSpacing: '1px',
       color: 'white',
       boxSizing: 'border-box',
-      fontSize: 'clamp(2vh, 4vh, 10vh)'
+      fontSize: 'clamp(2vh, 3.5vh, 10vh)'
    },
    picture: {
       width: `max-content`,
       aspectRatio: 3/4,
-      maxHeight: props => (isMobile) ? `calc(${props.width}px)` : `250px`,
+      maxHeight: props => (isMobile) ? `calc(${props.width}px * 0.3)` : `250px`,
       padding: '1vw',
    },
    pictureEmpty: {
       width: `max-content`,
       aspectRatio: 3/4,
-      height: props => (isMobile) ? `calc(${props.width}px)` : `250px`,
+      height: props => (isMobile) ? `calc(${props.width}px * 0.3)` : `250px`,
       padding: '1vw',
       objectFit: 'cover',
       borderRadius: '20px'

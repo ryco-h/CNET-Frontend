@@ -16,7 +16,7 @@ export default function Header() {
 
          <div className={styles.rightSide}>
             <a href='/games' className={styles.legend}>Games</a>
-            <span className={styles.legend}>Publishers</span>
+            <a href='/publishers' className={styles.legend}>Publishers</a>
          </div>
       </div>
    )

@@ -10,3 +10,8 @@ export async function fetchSteamDB() {
    let steamdb = await fetch(`${URL}/steamdb`)
    return await steamdb.json()
 }
+
+export async function fetchPublisher() {
+   let publisher = await fetch(`${URL}/publisher`)
+   return await publisher.json()
+}

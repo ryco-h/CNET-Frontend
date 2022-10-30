@@ -1,10 +1,12 @@
-import { Avatar } from "@mui/material"
+import { Avatar, Backdrop, CircularProgress } from "@mui/material"
 import { style } from "@mui/system"
 import { Fragment, useEffect, useState } from "react"
 import { fetchSteamDB } from "../../services/fetchAPI"
 import useWindowDimensions from "../../services/useWindowDimensions"
 import Template from "../Template/template"
 import { useMainpageStyles } from "./mainpage.style"
+import empty from '../../images/404.png'
+import { isMobile } from "react-device-detect"
 
 export default function MainpageIndex() {
    return(
@@ -18,11 +20,13 @@ function Mainpage() {
    const styles = useMainpageStyles({width, height})
 
    const [steamdb, setSteamDB] = useState()
+   const [isLoading, setLoading] = useState(true)
 
    useEffect(() => {
       fetchSteamDB()
       .then(res => {
          setSteamDB(res)
+         setLoading(false)
       })
    }, [])
 
@@ -38,7 +42,12 @@ function Mainpage() {
                         <Fragment>
                         {(collection.game[idx]) ?
                            <div key={collection.game[idx].idGame}>
-                              <img src={collection.game[idx].picture} className={styles.picture}/>
+                              <img 
+                              onError={(currentTarget) => {
+                                 currentTarget.target.onerror = null; // prevents looping
+                                 currentTarget.target.src=empty
+                               }}
+                              src={collection.game[idx].picture} className={styles.picture}/>
                            </div>
                         :
                            <div>
@@ -52,18 +61,27 @@ function Mainpage() {
                   <div style={{
                      display: 'flex',
                      boxSizing: 'border-box',
-                     justifyContent: 'flex-start',
+                     justifyContent: (isMobile) ? 'center' : 'flex-start',
                      alignItems: 'center',
-                     marginTop: '1vw',
+                     marginTop: (!isMobile) && '1vw',
                      margin: '2vw',
+                     marginBottom: '20px',
                      gap: '10px'
                   }}>
-                     <Avatar sx={{ width: 56, height: 56 }} alt="Profile Picture" src="https://www.w3schools.com/w3images/avatar2.png" />
-                     <span className={styles.publisher}>{collection.publisher[0].name}</span>
+                     <Avatar sx={{ width: (isMobile) ? 30 : 56, height: (isMobile) ? 30 : 56 }} alt="Profile Picture" src="https://www.w3schools.com/w3images/avatar2.png" />
+                     <span className={styles.publisher}>{collection.publisher.name}</span>
                   </div>
                </div>
             ))}
          </div>
+         <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+            >
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+               <CircularProgress color="inherit" />
+            </div>
+         </Backdrop>
       </div>
    )
 }

@@ -18,7 +18,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 import { useFormik } from 'formik'
-import { Alert, Button, Slide, TextField } from "@mui/material";
+import { Alert, Backdrop, Button, CircularProgress, Slide, TextField } from "@mui/material";
+import empty from '../../images/404.png'
 
 const validate = values => {
 
@@ -131,7 +132,12 @@ function Games() {
             {(!isLoading) && 
                games.map((game, index, array) => (
                   <div key={game.id} className={styles.cardGame} style={{zIndex: '99'-index}}>
-                     <img className={styles.picture} src={game.picture} alt={game.name}/>
+                     <img
+                     onError={(currentTarget) => {
+                        currentTarget.target.onerror = null; // prevents looping
+                        currentTarget.target.src=empty
+                      }}
+                     className={styles.picture} src={game.picture}/>
                      <div className={'bodyContent'}>
                         <div style={{
                            width: '100%',
@@ -258,6 +264,15 @@ function Games() {
                </form>
             </DialogContent>
          </Dialog>
+
+         <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+            >
+            <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+               <CircularProgress color="inherit" />
+            </div>
+         </Backdrop>
       </div>
    )
 }
