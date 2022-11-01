@@ -1,4 +1,6 @@
 import { forwardRef, Fragment, useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+
 import Template from "../Template/template";
 import { useGamesStyles } from "./games.style";
 
@@ -74,19 +76,32 @@ function Games() {
    
    const {width, height} = useWindowDimensions()
    const styles = useGamesStyles({width, height})
+   let [searchParams, setSearchParams] = useSearchParams();
 
    const [games, setGames] = useState()
+   const [searchData, setSearchData] = useState()
    const [isLoading, setLoading] = useState(true)
 
    useEffect(() => {
 
       fetchGame().then(result => {
          setGames(result)
+         setSearchData(result)
          setLoading(false)
       })
-   }, [])
+   }, [searchParams.get('name')])
 
-   console.log((games) && games)
+   // Search Data Game
+   const searchHandler = (e) => {
+
+      let value = e.target.value
+
+      if(value) {
+         setSearchParams({name: value})
+      } else {
+         setSearchParams()
+      }
+   }
 
    // Form Modal
    const [open, setOpen] = useState(false);
@@ -119,6 +134,10 @@ function Games() {
 
    return(
       <div className={styles.root}>
+         <div className={styles.search}>
+            <input value={(searchParams.get('name')) && searchParams.get('name')} type={'search'} className={styles.input} placeholder='Cari game' onChange={searchHandler}/>
+         </div>
+
          <div className={styles.cardContainer}>
             <Fragment>
                <div className={styles.addGame} onClick={() => handleClickOpen()}>
@@ -130,8 +149,16 @@ function Games() {
                   <div className={'cover'}/>
                </div>
             {(!isLoading) && 
-               games.map((game, index, array) => (
-                  <div key={game.id} className={styles.cardGame} style={{zIndex: '99'-index}}>
+               games.filter(game => {
+
+                  let search = searchParams.get('name')
+                  if(search) {
+                     return game.name.toLowerCase().includes(search) || game.name.includes(search)
+                  } else {
+                     return game
+                  }
+               }).map((game, index, array) => (
+                  <div key={game.id} className={styles.cardGame} style={{zIndex: '99'-index}} id={game.idGame}>
                      <img
                      onError={(currentTarget) => {
                         currentTarget.target.onerror = null; // prevents looping

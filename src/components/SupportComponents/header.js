@@ -25,7 +25,7 @@ export default function Header() {
 const useHeaderStyles = makeStyles({
    root: {
       display: 'flex',
-      gap: (isMobile) && '4vw',
+      gap: (isMobile) ? '4vw' : '2vw',
       justifyContent: 'center',
       flexWrap: 'wrap',
       alignItems: 'center',
@@ -48,7 +48,7 @@ const useHeaderStyles = makeStyles({
    },
    leftSide: {
       display: 'flex',
-      justifyContent: (isMobile) ? 'center' : 'flex-start',
+      justifyContent: props => (isMobile) ? 'center' : (props.width < 768) ? 'center' : 'flex-start',
       flex: 1,
       // backgroundColor: 'red'
    },
@@ -58,7 +58,7 @@ const useHeaderStyles = makeStyles({
    },
    rightSide: {
       display: 'flex',
-      justifyContent: (isMobile) ? 'center' : 'flex-end',
+      justifyContent: props => (isMobile) ? 'center' : (props.width < 768) ? 'center' : 'flex-end',
       alignItems: 'center',
       flex: 1,
       // backgroundColor: 'blue'

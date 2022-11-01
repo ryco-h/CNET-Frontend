@@ -7,6 +7,7 @@ import Template from "../Template/template"
 import { useMainpageStyles } from "./mainpage.style"
 import empty from '../../images/404.png'
 import { isMobile } from "react-device-detect"
+import { Link } from "react-router-dom"
 
 export default function MainpageIndex() {
    return(
@@ -30,8 +31,6 @@ function Mainpage() {
       })
    }, [])
 
-   console.log((steamdb) && steamdb)
-
    return(
       <div className={styles.root}>
          <div className={styles.cardContainer}>
@@ -41,14 +40,16 @@ function Mainpage() {
                      {[0, 1, 2, 3].map(idx => (
                         <Fragment>
                         {(collection.game[idx]) ?
-                           <div key={collection.game[idx].idGame}>
+                           <Link
+                           to={`/games?name=${collection.game[idx].name}`}
+                           key={collection.game[idx].idGame}>
                               <img 
                               onError={(currentTarget) => {
                                  currentTarget.target.onerror = null; // prevents looping
                                  currentTarget.target.src=empty
                                }}
                               src={collection.game[idx].picture} className={styles.picture}/>
-                           </div>
+                           </Link>
                         :
                            <div>
                               <img src='https://w0.peakpx.com/wallpaper/228/508/HD-wallpaper-coming-soon-baseball.jpg' className={styles.pictureEmpty}/>

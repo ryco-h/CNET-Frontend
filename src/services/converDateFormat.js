@@ -11,7 +11,7 @@ const convertDateFormat = timeStamp => {
    var dateNow = new Date()
 
    var finalTimeStamp = () => {
-         return month + '/' + date + '/' + year + ' ' + hours + ':' + minutes
+         return month + '/' + date + '/' + year
    }
 
    return finalTimeStamp()
