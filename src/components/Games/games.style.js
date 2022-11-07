@@ -41,8 +41,9 @@ export const useGamesStyles = makeStyles({
          // backgroundImage: 'url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iaXNvLTg4NTktMSI/Pg0KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE2LjAuMCwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPg0KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4NCjxzdmcgdmVyc2lvbj0iMS4xIiBpZD0iQ2FwYV8xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB4PSIwcHgiIHk9IjBweCINCgkgd2lkdGg9IjEyMy4wNXB4IiBoZWlnaHQ9IjEyMy4wNXB4IiB2aWV3Qm94PSIwIDAgMTIzLjA1IDEyMy4wNSIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTIzLjA1IDEyMy4wNTsiDQoJIHhtbDpzcGFjZT0icHJlc2VydmUiPg0KPGc+DQoJPHBhdGggZD0iTTEyMS4zMjUsMTAuOTI1bC04LjUtOC4zOTljLTIuMy0yLjMtNi4xLTIuMy04LjUsMGwtNDIuNCw0Mi4zOTlMMTguNzI2LDEuNzI2Yy0yLjMwMS0yLjMwMS02LjEwMS0yLjMwMS04LjUsMGwtOC41LDguNQ0KCQljLTIuMzAxLDIuMy0yLjMwMSw2LjEsMCw4LjVsNDMuMSw0My4xbC00Mi4zLDQyLjVjLTIuMywyLjMtMi4zLDYuMSwwLDguNWw4LjUsOC41YzIuMywyLjMsNi4xLDIuMyw4LjUsMGw0Mi4zOTktNDIuNGw0Mi40LDQyLjQNCgkJYzIuMywyLjMsNi4xLDIuMyw4LjUsMGw4LjUtOC41YzIuMy0yLjMsMi4zLTYuMSwwLTguNWwtNDIuNS00Mi40bDQyLjQtNDIuMzk5QzEyMy42MjUsMTcuMTI1LDEyMy42MjUsMTMuMzI1LDEyMS4zMjUsMTAuOTI1eiIvPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPGc+DQo8L2c+DQo8Zz4NCjwvZz4NCjxnPg0KPC9nPg0KPC9zdmc+DQo=)',
          WebKitAppearance: 'none',
          appearance: 'none',
-         height: '2vw',
-         width: '2vw',
+         cursor: 'pointer',
+         height: '4.5vh',
+         width: '4.5vh',
          background: 'url(https://www.pngall.com/wp-content/uploads/5/Delete-Bin-Trash-PNG-Clipart.png) no-repeat 50% 50%',
          backgroundSize: 'contain',
       },
@@ -95,6 +96,7 @@ export const useGamesStyles = makeStyles({
       '&:hover': {
          boxSizing: 'border-box',
          '& .bodyContent': {
+            height: '100%',
             boxShadow: '0 0 10px #9ecaed',
             display: 'flex'
          }
@@ -109,7 +111,7 @@ export const useGamesStyles = makeStyles({
          flexDirection: 'column',
          alignItems: 'flex-start',
          justifyContent: 'center',
-         gap: '20px',
+         gap: '10px',
          padding: '10%',
          backgroundColor: 'rgba(69, 67, 95, 1)',
          borderRadius: '2vw',
@@ -119,15 +121,19 @@ export const useGamesStyles = makeStyles({
    },
    name: {
       textAlign: 'flex-start',
-      fontSize: 'clamp(2vh, 4vh, 10vh)',
+      fontSize: 'clamp(2vh, 3.5vh, 10vh)',
       color: 'white',
       fontWeight: 'bold',
       fontFamily: 'sans-serif'
    },
    description: {
       textAlign: 'flex-start',
+      overflowY: 'auto',
+      height: '150%',
       color: '#ffffff80',
-      fontSize: 'clamp(2vh, 3vh, 10vh)'
+      paddingBottom: '1vw',
+      marginBottom: '2vw',
+      fontSize: 'clamp(2vh, 2.5vh, 10vh)'
    },
    price: {
       textAlign: 'flex-start',
@@ -135,25 +141,29 @@ export const useGamesStyles = makeStyles({
       color: 'black',
       fontWeight: 'bold',
       fontFamily: 'sans-serif',
+      marginBottom: '1vw',
       padding: '1vh',
       borderRadius: '10px',
       backgroundColor: 'white'
    },
    picture: {
       aspectRatio: 3/4,
+      objectFit: 'cover',
       maxWidth: props => `calc(${props.width}px * 0.8)`,
       maxHeight: props => (isMobile) ? `calc(${props.width}px)` : `550px`,
       padding: '2vw'
    },
    genreContainer: {
       display: 'flex',
-      flexWrap: 'wrap',
-      width: 'inherit',
+      width: '100%',
+      height: '50%',
+      overflowX: 'auto',
       gap: '10px'
    },
    genre: {
-      width: 'max-content',
-      gridRow: '1',
+      flex: '0 0 auto',
+      height: 'max-content',
+      width: 'auto',
       backgroundColor: '#ffffff50',
       padding: '1vh',
       color: 'white',

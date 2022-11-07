@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import Template from "../Template/template";
 import { useGamesStyles } from "./games.style";
 
-import { fetchGame } from "../../services/fetchAPI";
+import { fetchGame, URL } from "../../services/fetchAPI";
 import formatHarga from "../../services/formatHarga";
 import useWindowDimensions from "../../services/useWindowDimensions";
 
@@ -20,22 +20,19 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
 
 import { useFormik } from 'formik'
-import { Alert, Backdrop, Button, CircularProgress, Slide, TextField } from "@mui/material";
+import { Alert, Autocomplete, Backdrop, Button, Chip, CircularProgress, Slide, TextareaAutosize, TextField } from "@mui/material";
 import empty from '../../images/404.png'
+import axios from "axios";
 
 const validate = values => {
 
    const errors = {};
    if (!values.name) {
       errors.name = 'Tidak boleh kosong';
-   } else if (values.name.length > 5) {
-      errors.name = 'Must be 5 characters or less';
+   } else if (values.name.length < 5) {
+      errors.name = 'Must be more than 5 characters';
    }
-
-   if (!values.picture) {
-      errors.picture = 'Tidak boleh kosong';
-   }
-
+   
    if (!values.description) {
       errors.description = 'Tidak boleh kosong';
    }
@@ -50,7 +47,7 @@ const validate = values => {
       errors.dateReleased = 'Tidak boleh kosong';
    }
 
-   if (!values.genre) {
+   if (values.genre.length === 0) {
       errors.genre = 'Tidak boleh kosong';
    }
 
@@ -79,6 +76,7 @@ function Games() {
    let [searchParams, setSearchParams] = useSearchParams();
 
    const [games, setGames] = useState()
+   console.log((games) && games)
    const [searchData, setSearchData] = useState()
    const [isLoading, setLoading] = useState(true)
 
@@ -123,13 +121,23 @@ function Games() {
         description: '',
         price: '',
         dateReleased: Date.now(),
-        genre: '',
+        genre: [],
         publisher: '',
       },
       validate,
-      onSubmit: values => {
-        alert(JSON.stringify(values, null, 2));
-      },
+      onSubmit: async (values) => {
+         window.alert(JSON.stringify(values.genre));
+         // setLoading(true)
+         // await axios.post(`${URL}/gamedb/register`, values)
+         // .then(res => {
+         //    window.alert(JSON.stringify(res))
+         //    setLoading(false)
+         // })
+         // .catch(err => {
+         //    window.alert(JSON.stringify(err))
+         //    setLoading(false)
+         // })
+      }
    });
 
    return(
@@ -170,11 +178,11 @@ function Games() {
                            width: '100%',
                            display: 'flex',
                            flexDirection: 'row',
-                           justifyContent: 'flex-end',
+                           justifyContent: 'flex-end'
                         }}>
                            <FileUploadIcon sx={{
                               color: 'white',
-                              fontSize: '3vw',
+                              fontSize: '5vh',
                               '&:hover': {
                                  color: 'black'
                               }
@@ -245,11 +253,12 @@ function Games() {
                      error={formik.touched.picture && Boolean(formik.errors.picture)}
                      helperText={formik.touched.picture ? formik.errors.picture : 'Gunakan link yang valid untuk gambar!'}
                   />
-                  <TextField
+                  <TextareaAutosize
+                     minRows={2}
                      fullWidth
                      id="description"
                      name="description"
-                     label="Deskripsi Game"
+                     placeholder="Deskripsi Game"
                      value={formik.values.description}
                      onChange={formik.handleChange}
                      error={formik.touched.description && Boolean(formik.errors.description)}
@@ -265,15 +274,30 @@ function Games() {
                      error={formik.touched.price && Boolean(formik.errors.price)}
                      helperText={formik.touched.price && formik.errors.price}
                   />
-                  <TextField
-                     fullWidth
-                     id="genre"
-                     name="genre"
+                  <Autocomplete
+                     multiple
                      label="Genre"
-                     value={formik.values.genre}
-                     onChange={formik.handleChange}
                      error={formik.touched.genre && Boolean(formik.errors.genre)}
-                     helperText={formik.touched.genre && formik.errors.genre}
+                     helperText={formik.touched.genre ? formik.errors.genre : 'Pisahkan dengan koma, Contoh: Open World, Free to Play'}
+                     options={genres.map((option) => option.genre)}
+                     freeSolo
+                     renderTags={(value, getTagProps) => {
+                        console.log(value, 'test')
+                        formik.values.genre = value
+                        return value.map((option, index) => (
+                           <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                        ))}
+                     }
+                     renderInput={(params) => (
+                        <TextField
+                           {...params}
+                           variant="filled"
+                           label="Genres"
+                           id="genre"
+                           name="genre"
+                           placeholder="Masukkan genre"
+                        />
+                     )}
                   />
                   <TextField
                      fullWidth
@@ -293,7 +317,7 @@ function Games() {
          </Dialog>
 
          <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 99999991 }}
             open={isLoading}
             >
             <div style={{display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
@@ -303,3 +327,13 @@ function Games() {
       </div>
    )
 }
+
+const genres = [
+   { genre: 'Free to Play'},
+   { genre: 'Open World'},
+   { genre: 'Multiplayer'},
+   { genre: 'Singleplayer'},
+   { genre: 'Coop'},
+   { genre: 'MOBA'},
+   { genre: "First Person Shooter"},
+]

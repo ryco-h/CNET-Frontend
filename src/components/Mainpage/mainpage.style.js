@@ -20,7 +20,6 @@ export const useMainpageStyles = makeStyles({
       margin: '2vw',
       height: 'auto',
       width: 'min-content',
-      cursor: 'pointer',
       borderRadius: (!isMobile) && '2vw',
       boxSizing: 'border-box',
       boxShadow: 'rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset',
@@ -44,6 +43,7 @@ export const useMainpageStyles = makeStyles({
    picture: {
       width: `max-content`,
       aspectRatio: 3/4,
+      objectFit: 'cover',
       maxHeight: props => (isMobile) ? `calc(${props.width}px * 0.3)` : `250px`,
       padding: '1vw',
    },
